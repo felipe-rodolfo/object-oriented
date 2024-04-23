@@ -5,7 +5,7 @@ class Login {
     public $email ;
     public $password;
 
-    public function logar(){
+    public function auth(){
         return "o meu email é " . $this->email .  " e minha senha é " .  $this->password;
     }
 
