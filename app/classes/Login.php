@@ -4,11 +4,12 @@ namespace app\classes;
 
 class Login {
 
-    public $email ;
-    public $password;
+    // public string $email ;
+    // public string $password;
 
-    public function auth(){
-        return "o meu email é " . $this->email .  " e minha senha é " .  $this->password;
+    public function auth($email, $password): string
+    {
+        return "o meu email é " .  $email .  " e minha senha é " .   $password;
     }
 
 }

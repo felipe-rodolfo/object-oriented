@@ -1,13 +1,15 @@
 <?php
+declare(strict_types=1);
+
 require '../vendor/autoload.php';
 
-use app\classes\Crud;
-//use app\classes\Login;
-//$login = new Login();
-//$login->email = 'felipe@email.com';
-//$login->password = '123';
-//echo $login->auth();
+use app\classes\Login;
 
-$crud = new Crud();
 
-echo $crud->read();
+
+try {
+    $login = new Login();
+    echo $login->auth('felipe@email.com', 123);
+} catch(TypeError $e){
+    echo $e->getMessage();
+}
