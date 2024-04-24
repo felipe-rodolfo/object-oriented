@@ -2,7 +2,10 @@
 
 namespace app\classes;
 
-class User
+class User extends Person
 {
-    
+    public function info()
+    {
+       return parent::info();
+    }
 }

@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 use app\classes\Person;
+use app\classes\User;
 
 require '../vendor/autoload.php';
 
-$person = new Person('Felipe', 'feliperodolfo.midias@gmail.com');
+$user = new User();
 
-echo $person->email;
-echo $person->name;
+echo $user->info();
