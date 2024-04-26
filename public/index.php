@@ -9,10 +9,25 @@ class User
     
     public static function userInfo()
     {
-        return "teste método estático";
+        return __CLASS__;
     }
 
+    public function teste()
+    {
+        return self::userInfo();
+    }
    
 }
 
+class User2 extends User 
+{
+    public static function userInfo()
+    {
+        return __CLASS__;
+    }
+}
+
 echo User::userInfo();
+
+$user2 = new User2;
+echo $user2->teste();
