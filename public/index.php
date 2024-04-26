@@ -3,21 +3,33 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-class Template {
-
-    const PATH = 'app/views/';
-
-    
-}
-
-class Twig extends Template
+class Person 
 {
-    const PATH = 'app/views/twig';
+    public string $name = "Felipe";
+    protected int $age = 39;
+    private $address = 'my address';
 
-    public function load()
+    public function walk()
     {
-        return static::PATH;
+        echo $this->name. " is walking\n";
+    }
+
+    protected function eat()
+    {
+        return 'eating';
+    }
+
+    private function fly()
+    {
+        return 'flying';
     }
 }
 
-echo (new Twig)->load();
+class User extends Person
+{
+
+}
+$user = new User();
+
+$person = new Person();
+echo $person->walk();
