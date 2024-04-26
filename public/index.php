@@ -3,33 +3,27 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-class Person 
+class Product
 {
-    public string $name = "Felipe";
-    protected int $age = 39;
-    private $address = 'my address';
+    public float $price;
+    private $discountProduct = 10;
 
-    public function walk()
+    public function setPrice($price)
     {
-        echo $this->name. " is walking\n";
+        if(is_numeric($price) && $price > 1){
+            $this->price = $price - $this->discountProduct;
+        } else {
+            throw new \Exception('Invalid price');
+        }
+        
     }
 
-    protected function eat()
+    public function getPrice(): float
     {
-        return 'eating';
-    }
-
-    private function fly()
-    {
-        return 'flying';
+        return $this->price;
     }
 }
 
-class User extends Person
-{
-
-}
-$user = new User();
-
-$person = new Person();
-echo $person->walk();
+$product = new Product;
+$product->setPrice('100');
+echo $product->getPrice();
