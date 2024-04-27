@@ -3,27 +3,65 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-class Product
+class Connection
 {
-    public float $price;
-    private $discountProduct = 10;
+    private static $connect = null;
 
-    public function setPrice($price)
+    public static function connect()
     {
-        if(is_numeric($price) && $price > 1){
-            $this->price = $price - $this->discountProduct;
-        } else {
-            throw new \Exception('Invalid price');
+        try {
+            if(!self::$connect){
+                self::$connect = new PDO('mysql:host=localhost;dbname=test', 'root', '');
+            }
+        } catch (PDOException $e) {
+            var_dump($e->getMessage());
         }
-        
+    }
+}
+class Model 
+{
+
+    protected $connect;
+
+    public function __construct()
+    {
+        return $this->connect = Connection::connect();
     }
 
-    public function getPrice(): float
+    protected function query($ql)
     {
-        return $this->price;
+        $query = $this->connect->query($ql);
+        return $query->execute($query);
+    }
+
+    protected function prepare($sql, $data)
+    {
+        $query $this->connect->prepare($sql);
+        return $query->execute($data);
+    }
+
+    public function all()
+    {
+        $sql = "select * from {$this->table}";
+        $query = $this->connect->query($query);
+        $query->execute();
+        return $query->fetchAll();
+    }
+
+}
+
+class User extends Model
+{
+    protected $table = 'users';
+
+    public function usersWithAdmin()
+    {
+        $sql = "select * from {$this->table} where admin = 1";
+        $query = $this->connect->query($sql);
+        $query->execute();
+        return $query->fetchAll();
     }
 }
 
-$product = new Product;
-$product->setPrice('100');
-echo $product->getPrice();
+$user = new User();
+var_dump($user->usersWithAdmin());
