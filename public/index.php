@@ -3,65 +3,42 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-class Connection
-{
-    private static $connect = null;
+class BankAccount {
+    private $accountNumber;
+    private $balance;
 
-    public static function connect()
-    {
-        try {
-            if(!self::$connect){
-                self::$connect = new PDO('mysql:host=localhost;dbname=test', 'root', '');
-            }
-        } catch (PDOException $e) {
-            var_dump($e->getMessage());
+    public function __construct($accountNumber, $balance) {
+        $this->accountNumber = $accountNumber;
+        $this->balance = $balance;
+    }
+
+    public function getAccountNumber() {
+        return $this->accountNumber;
+    }
+
+    public function getBalance() {
+        return $this->balance;
+    }
+
+    public function deposit($amount) {
+        if($amount > 0){
+            $this->balance += $amount;
+            return "Deposit of $amount sucessfully made. New balance: $this->balance" . PHP_EOL;
+        }
+    }
+
+    public function withdraw($amount) {
+        if($amount > 0 && $amount <= $this->balance){
+            $this->balance -= $amount;
+            return "Withdrawal of $amount sucessfully made. New balance: $this->balance" . PHP_EOL;
+        } else {
+            return "Insufficient funds. Current balance: $this->balance" . PHP_EOL;
         }
     }
 }
-class Model 
-{
 
-    protected $connect;
-
-    public function __construct()
-    {
-        return $this->connect = Connection::connect();
-    }
-
-    protected function query($ql)
-    {
-        $query = $this->connect->query($ql);
-        return $query->execute($query);
-    }
-
-    protected function prepare($sql, $data)
-    {
-        $query $this->connect->prepare($sql);
-        return $query->execute($data);
-    }
-
-    public function all()
-    {
-        $sql = "select * from {$this->table}";
-        $query = $this->connect->query($query);
-        $query->execute();
-        return $query->fetchAll();
-    }
-
-}
-
-class User extends Model
-{
-    protected $table = 'users';
-
-    public function usersWithAdmin()
-    {
-        $sql = "select * from {$this->table} where admin = 1";
-        $query = $this->connect->query($sql);
-        $query->execute();
-        return $query->fetchAll();
-    }
-}
-
-$user = new User();
-var_dump($user->usersWithAdmin());
+$account = new BankAccount(123456789, 1000);
+$account->withdraw(999);
+$account->deposit(14);
+echo "Account Number: " . $account->getAccountNumber() . PHP_EOL;
+echo "Current Balance: " . $account->getBalance() . PHP_EOL;
