@@ -1,31 +1,40 @@
 <?php
 declare(strict_types=1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require '../vendor/autoload.php';
 
-abstract class Checkout {
-    abstract public function pay($payment): array;
+interface CartInterface {
+    public function add($product);
+    public function remove($product);
+    public function getTotal();
+    public function getProducts();
 }
 
-class PaypalChecout extends Checkout {
-    public function pay($payment): array {
-        return [
-            'Paypal payment' => $payment
-        ];
+class Cart implements CartInterface {
+    private $products = [];
+
+    public function add($product) {
+        $this->products[] = $product;
     }
-}
 
-class PagseguroCheckout extends Checkout {
-    public function pay($payment): array {
-        return [
-            'Pagseguro payment' => $payment
-        ];
+    public function remove($product) {
+        $this->products = array_values(array_filter($this->products, function($item) use ($product) {
+            return $item->getName()!= $product->getName();
+        }));
     }
-}
 
+    public function getTotal() {
+        $total = 0;
+        foreach ($this->products as $product) {
+            $total += $product->getPrice();
+        }
+        return $total;
+    }
 
-$payment = new PaypalChecout;
-$payment->pay(120);
-foreach ($payment as $key => $value) {
-    echo $key. ': '. $value. '<br>';
+    public function getProducts() {
+        return $this->products;
+    }
 }
