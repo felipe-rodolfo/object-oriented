@@ -3,29 +3,30 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-abstract class Checkout {
-    abstract public function pay($payment): array;
-}
-
-class PaypalCheckout extends Checkout {
-    public function pay($payment): array {
-        return [
-            'PaypalCheckout payment' => $payment
-        ];
+trait StringToSlug {
+    public function stringToSlug($string) 
+    {
+        $string = strtolower($string);
+        $string = preg_replace('/[^a-zA-Z0-9\-]/', '', $string);
+        $string = preg_replace('/\s+/', '-', $string);
+        return $string;
     }
 }
 
-class PagseguroCheckout extends Checkout {
+class Post {
+    use StringToSlug;
+    private string $title;
+    public function setString(string $string)
+    {
+        $this->title = $this->stringToSlug($string);
+    }
 
-    public function pay($payment): array {
-        return [
-            'PagseguroCheckout payment' => $payment
-        ];
+    public function getString()
+    {
+        return $this->title;
     }
 }
 
-$paypal = new PaypalCheckout;
-$paypal->pay(120);
-
-$pagseguro = new PagseguroCheckout;
-$pagseguro->pay(150);
+$post = new Post();
+$post->setString("Amazing title post");
+echo $post->getString();
