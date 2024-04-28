@@ -4,31 +4,47 @@ declare(strict_types=1);
 require '../vendor/autoload.php';
 
 
-class Teacher {
+class Employee {
     private $name;
+    private $position;
 
-    public function __construct($name) {
+    public function __construct($name, $position) {
         $this->name = $name;
+        $this->position = $position;
     }
 
     public function getName() {
         return $this->name;
     }
-}
 
-class Classroom {
-    private $teacher;
-
-    public function __construct($teacher) {
-        $this->teacher = $teacher;
-    }
-
-    public function getTeacherName() {
-        return $this->teacher->getName();
+    public function getPosition() {
+        return $this->position;
     }
 }
 
-$teacher = new Teacher("Mr. Smith");
-$classroom = new Classroom($teacher);
+class Department {
+    private $name;
+    private $employees = [];
 
-echo $classroom->getTeacherName();
+    public function __construct($name) {
+        $this->name = $name;
+    }
+
+    public function addEmployee(Employee $employee) {
+        $this->employees[] = $employee;
+    }
+
+    public function getEmployees() {
+        return $this->employees;
+    }
+}
+
+$employee1 = new Employee("John Doe", "Manager");
+$employee2 = new Employee("Jane Smith", "Developer");
+
+$department = new Department("IT Department");
+
+$department->addEmployee($employee1);
+$department->addEmployee($employee2);
+
+$employeesInDepartment = $department->getEmployees();
