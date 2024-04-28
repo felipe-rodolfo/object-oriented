@@ -3,30 +3,44 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-trait StringToSlug {
-    public function stringToSlug($string) 
+class Address {
+    private $street;
+    private $zipcode;
+    private $city;
+    private $state;
+
+    public function __construct($street, $zipcode, $city, $state) {
+        $this->street = $street;
+        $this->zipcode = $zipcode;
+        $this->city = $city;
+        $this->state = $state;
+    }
+
+    public function getAddressInfo()
     {
-        $string = strtolower($string);
-        $string = preg_replace('/[^a-zA-Z0-9\-]/', '', $string);
-        $string = preg_replace('/\s+/', '-', $string);
-        return $string;
+        return $this->street. " ". $this->zipcode. " ". $this->city. " ". $this->state;
     }
 }
 
-class Post {
-    use StringToSlug;
-    private string $title;
-    public function setString(string $string)
-    {
-        $this->title = $this->stringToSlug($string);
+// Pessoa tem endenreço
+// Pessoa é um endereço
+
+// Pessoa é um animal
+// Pessoa tem um animal
+class Person {
+    private $name;
+    private $address;
+
+    public function __construct($name,  $street, $city, $state, $zipcode) {
+        $this->name = $name;
+        $this->address = new Address($street, $zipcode, $city, $state);
     }
 
-    public function getString()
-    {
-        return $this->title;
+    public function getPersonInfo() {
+        return "Name: $this->name, Address: " . $this->address->getAddressInfo();
     }
+
 }
 
-$post = new Post();
-$post->setString("Amazing title post");
-echo $post->getString();
+$person = new Person("John Doe", "123 Main St", "Springfield", "IL", "12345");
+echo $person->getPersonInfo();
