@@ -3,44 +3,32 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-class Address {
-    private $street;
-    private $zipcode;
-    private $city;
-    private $state;
 
-    public function __construct($street, $zipcode, $city, $state) {
-        $this->street = $street;
-        $this->zipcode = $zipcode;
-        $this->city = $city;
-        $this->state = $state;
-    }
-
-    public function getAddressInfo()
-    {
-        return $this->street. " ". $this->zipcode. " ". $this->city. " ". $this->state;
-    }
-}
-
-// Pessoa tem endenreço
-// Pessoa é um endereço
-
-// Pessoa é um animal
-// Pessoa tem um animal
-class Person {
+class Teacher {
     private $name;
-    private $address;
 
-    public function __construct($name,  $street, $city, $state, $zipcode) {
+    public function __construct($name) {
         $this->name = $name;
-        $this->address = new Address($street, $zipcode, $city, $state);
     }
 
-    public function getPersonInfo() {
-        return "Name: $this->name, Address: " . $this->address->getAddressInfo();
+    public function getName() {
+        return $this->name;
     }
-
 }
 
-$person = new Person("John Doe", "123 Main St", "Springfield", "IL", "12345");
-echo $person->getPersonInfo();
+class Classroom {
+    private $teacher;
+
+    public function __construct($teacher) {
+        $this->teacher = $teacher;
+    }
+
+    public function getTeacherName() {
+        return $this->teacher->getName();
+    }
+}
+
+$teacher = new Teacher("Mr. Smith");
+$classroom = new Classroom($teacher);
+
+echo $classroom->getTeacherName();
