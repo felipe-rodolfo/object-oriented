@@ -3,15 +3,28 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-class Notifier {
-    public function notify() {
-        echo "Notify users";
+interface NotifierInterface {
+    public function notify();
+}
+
+class EmailNotifier implements NotifierInterface {
+    public function notify()
+    {
+        echo "Notify users\n";
     }
 }
+
+class SMSNotifer implements NotifierInterface {
+    public function notify()
+    {
+        echo "Notify users by SMS\n";
+    }
+}
+
 class Post {
     public function __construct(
         public string $title,
-        public Notifier $notifier
+        public SMSNotifer $notifier
         ) {}
 
     public function publish() {
@@ -20,5 +33,5 @@ class Post {
     }
 }
 
-$newPost = new Post("Learning depency injecyion", new Notifier);
+$newPost = new Post("Learning depency injecyion", new SMSNotifer);
 $newPost->publish();
